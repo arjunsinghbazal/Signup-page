@@ -5,14 +5,42 @@ let email = document.getElementById('email');
 let red = document.getElementById('red');
 let form=document.getElementById('form');
 let showData=document.querySelector('.showData');
-//access form
 let loader=document.getElementById('loader');
 let button = document.getElementById('btn');
 let fname=document.getElementById('fname');
 let email1=document.getElementById('email1');
 let pass=document.getElementById('pass');
+let profile=document.getElementById('btn2');
+//show profile details
+profile.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (localStorage.getItem('FullName') && localStorage.getItem('Email') && localStorage.getItem('Password')) {
+        showData.style.display = "block";
+        red.style.display = "none";
+        form.style.display="none";
+        fname.innerText = localStorage.getItem('FullName');
+        email1.innerText = localStorage.getItem('Email');
+        pass.innerText = localStorage.getItem('Password');
+    } else {
+        alert("Please sign up first!");
+    }
+});
+//close profile page
+let closeButton = document.getElementById('closeButton');
+closeButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    showData.style.display = "none";
+    form.style.display = "block";
+    red.style.display="none";
+});
+///signup
 button.addEventListener("click",(e)=>{
     e.preventDefault();
+    ///if already have data
+    if (localStorage.getItem('FullName') && localStorage.getItem('Email') && localStorage.getItem('Password')) {
+        alert("Already signed up!");
+        return;
+    }
     if (validateForm()) {
         // save to local storage;
      localStorage.setItem('FullName',fullname.value);
@@ -35,6 +63,7 @@ button.addEventListener("click",(e)=>{
         },1000)
     }
 });
+//logout button
 let logout=document.getElementById('btn1');
 logout.addEventListener("click",(e)=>{
     e.preventDefault();
@@ -50,7 +79,7 @@ if(localStorage.getItem('FullName')&&localStorage.getItem('Email')&&localStorage
     email.value=localStorage.getItem('Email')
     pwd1.value=localStorage.getItem('Password')
 }
-
+///validation for inputs in form
 function validateForm() {
     let emailValue = email.value.trim();
     let isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
